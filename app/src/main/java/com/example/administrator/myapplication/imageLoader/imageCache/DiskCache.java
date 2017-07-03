@@ -1,4 +1,4 @@
-package com.example.administrator.myapplication.imageCache;
+package com.example.administrator.myapplication.imageLoader.imageCache;
 
 /**
  * Created by Administrator on 2017/7/3.
@@ -6,6 +6,8 @@ package com.example.administrator.myapplication.imageCache;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
+import com.example.administrator.myapplication.utils.CloseUtils;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -31,13 +33,7 @@ public class DiskCache implements ImageCache{
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } finally {
-            if (fileOutputStream != null){
-                try {
-                    fileOutputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            CloseUtils.closeQuietly(fileOutputStream);
         }
     }
 }

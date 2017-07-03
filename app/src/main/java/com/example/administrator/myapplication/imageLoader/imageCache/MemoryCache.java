@@ -1,4 +1,4 @@
-package com.example.administrator.myapplication.imageCache;
+package com.example.administrator.myapplication.imageLoader.imageCache;
 
 /**
  * Created by Administrator on 2017/7/3.

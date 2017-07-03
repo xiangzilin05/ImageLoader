@@ -1,4 +1,4 @@
-package com.example.administrator.myapplication;
+package com.example.administrator.myapplication.imageLoader;
 
 /**
  * Created by Administrator on 2017/7/3.
@@ -8,8 +8,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.ImageView;
 
-import com.example.administrator.myapplication.imageCache.ImageCache;
-import com.example.administrator.myapplication.imageCache.MemoryCache;
+import com.example.administrator.myapplication.imageLoader.imageCache.ImageCache;
+import com.example.administrator.myapplication.imageLoader.imageCache.MemoryCache;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;

@@ -13,4 +13,6 @@ import android.util.LruCache;
 public class ImageLoader {
     // 图片缓存
     LruCache<String, Bitmap> mImageCache;
+    // 线程池，线程数量为 CPU 的数量
+
 }

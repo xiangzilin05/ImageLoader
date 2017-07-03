@@ -6,14 +6,15 @@ package com.example.administrator.myapplication;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.LruCache;
 import android.widget.ImageView;
+
+import com.example.administrator.myapplication.imageCache.ImageCache;
+import com.example.administrator.myapplication.imageCache.MemoryCache;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -22,36 +23,49 @@ import java.util.concurrent.Executors;
  */
 public class ImageLoader {
     // 图片缓存
-    ImageCache mImageCache = new ImageCache();
+    ImageCache mImageCache = new MemoryCache();
+
     // 线程池，线程数量为 CPU 的数量
     ExecutorService mExecutorService = Executors.newFixedThreadPool(
             Runtime.getRuntime().availableProcessors()
     );
 
+    // 注入缓存实现
+    public void setImageCache(ImageCache cache){
+        mImageCache = cache;
+    }
 
-    public void displayImage(final String url, final ImageView imageView){
+    public void displayImage(final String url, final ImageView imageView) {
+//        Bitmap bitmap = isUseDiskCache ? mDiskCache.get(url) : mImageCache.get(url);
         Bitmap bitmap = mImageCache.get(url);
-        if (bitmap != null){
+        if (bitmap != null) {
             imageView.setImageBitmap(bitmap);
             return;
         }
+
+        // 图片没缓存，提交到线程池中下载图片
+        submitLoadRequest(url, imageView);
+    }
+
+    private void submitLoadRequest(final String url, final ImageView imageView) {
         imageView.setTag(url);
         mExecutorService.submit(new Runnable() {
             @Override
             public void run() {
                 Bitmap bitmap = downloadImage(url);
-                if (bitmap == null){
+                if (bitmap == null) {
                     return;
                 }
-                if (imageView.getTag().equals(url)){
+                if (imageView.getTag().equals(url)) {
                     imageView.setImageBitmap(bitmap);
                 }
                 mImageCache.put(url, bitmap);
             }
         });
+
     }
 
-    public Bitmap downloadImage(String imageUrl){
+    public Bitmap downloadImage(String imageUrl) {
         Bitmap bitmap = null;
         try {
             URL url = new URL(imageUrl);

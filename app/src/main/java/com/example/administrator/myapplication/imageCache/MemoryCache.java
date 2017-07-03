@@ -1,4 +1,4 @@
-package com.example.administrator.myapplication;
+package com.example.administrator.myapplication.imageCache;
 
 /**
  * Created by Administrator on 2017/7/3.
@@ -10,11 +10,11 @@ import android.util.LruCache;
 /**
  * 处理图片缓存
  */
-public class ImageCache {
+public class MemoryCache implements ImageCache {
     // 图片缓存
     LruCache<String, Bitmap> mImageCache;
 
-    public ImageCache(){
+    public MemoryCache(){
         initImageCache();
     }
 
